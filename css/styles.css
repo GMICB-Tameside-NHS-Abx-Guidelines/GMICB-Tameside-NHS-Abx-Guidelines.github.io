@@ -11251,19 +11251,6 @@ form .row:first-child .floating-label-form-group {
     box-shadow: 2px 2px 3px #999;
 }
 
-.mainfloat {
-    position: fixed;
-    width: 30px;
-    height: 30px;
-    bottom: 40px;
-    right: 40px;
-    background-color: #005eb8;
-    color: #FFF;
-    border-radius: 50px;
-    text-align: center;
-    box-shadow: 2px 2px 3px #999;
-}
-
 .my-float {
     margin-top: 22px;
 }
@@ -11309,15 +11296,3 @@ form .row:first-child .floating-label-form-group {
     word-wrap: break-word;
     word-break: break-word;
 }
-
-pre code {
-    word-break: break-word;
-  }
-  
-  .is-invisible {
-    opacity: 0;
-  }
-  
-  .subscription-details {
-    transition: opacity 1s;
-  }

@@ -1,11 +1,11 @@
 const TGAbxApp = "TG-ABX-App-v1"
 const assets = [
   "./",
-  "./index.html",
+  "/index.html",
   "/css/style.css",
   "/css/styles.css",
   "/js/app.js",
-  "./assets/img",
+  "/assets/img",
   "/assets/img/portfolio/baby.png",
   "/assets/img/portfolio/abx.png",
   "/assets/img/portfolio/blood_1.png",
@@ -36,14 +36,16 @@ const assets = [
 ]
 
 // install event
-self.addEventListener('install', evt => {
-  evt.waitUntil(
-    caches.open(TGAbxApp).then((cache) => {
-      console.log('caching shell assets');
-      cache.addAll(assets);
-    })
-  );
-});
+self.addEventListener('install', (e) => {
+  console.log('[Service Worker] install');
+  e.waitUntil((async () => {
+    const cache = await
+    caches.open(TGAbxApp)
+    console.log('[Service Worker] Caching all: app and content')
+    await
+    cache.addAll(assets)
+  })())
+})
 
 // activate event
 self.addEventListener('activate', evt => {
@@ -58,10 +60,27 @@ self.addEventListener('activate', evt => {
 });
 
 // fetch event
-self.addEventListener('fetch', evt => {
-  evt.respondWith(
-    caches.match(evt.request).then(cacheRes => {
-      return cacheRes || fetch(evt.request);
-    })
-  );
-});
+// self.addEventListener('fetch', evt => {
+//   evt.respondWith(
+//     caches.match(evt.request).then(cacheRes => {
+//       return cacheRes || fetch(evt.request);
+//     })
+//   );
+// });
+
+//fetch event
+self.addEventListener('fetch', (e) => {
+  e.respondsWith((async () => {
+    const r = await
+    caches.match(e.request);
+    console.log(`[Service Worker] fetching resource: ${e.request.url}`);
+    if(r) {return r}
+    const response = await
+    fetch(e.request);
+    const cache = await
+    caches.open(TGAbxApp)
+    console.log(`[Service Worker] caching new resource: ${e.request.url}`)
+    cache.put(e.request, response.clone())
+    return response;
+  })())
+})

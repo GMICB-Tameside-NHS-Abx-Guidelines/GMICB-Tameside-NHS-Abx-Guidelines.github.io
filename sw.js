@@ -1,4 +1,4 @@
-const TGAbxApp = "TG-ABX-App-v1"
+const TGAbxApp = "TG-ABX-App-v1.3"
 
 const assets = [
   "/index.html",
@@ -67,15 +67,6 @@ self.addEventListener('activate', evt => {
     })
   );
 });
-
-// fetch event
-// self.addEventListener('fetch', evt => {
-//   evt.respondWith(
-//     caches.match(evt.request).then(cacheRes => {
-//       return cacheRes || fetch(evt.request);
-//     })
-//   );
-// });
 
 //fetch event
 self.addEventListener('fetch', (e) => {

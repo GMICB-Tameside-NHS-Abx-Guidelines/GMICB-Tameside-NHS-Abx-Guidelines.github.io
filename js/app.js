@@ -15,7 +15,7 @@ function closeInfoModal() {
 	}
 }
 
-
+let deferredPrompt;	
 window.addEventListener('beforeinstallprompt', function (e) {
 	var deferredPrompt;
 	deferredPrompt = e;
@@ -261,7 +261,7 @@ window['isUpdateAvailable']
 	.then(isAvailable => {
 		if (isAvailable) {
 			const toast = this.toastCtrl.create({
-				message: 'New Update available! Reload the webapp to see the latest juicy changes.',
+				message: 'New Update available! Reload the webapp to see the latest guidance.',
 				position: 'bottom',
 				showCloseButton: true,
 			});

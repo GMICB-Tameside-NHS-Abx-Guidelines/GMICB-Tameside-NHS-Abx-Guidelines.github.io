@@ -1,12 +1,3 @@
-
-//Close info modal
-function closeInfoModal() {
-	if (window.navigator.standalone) {
-		$('#infoModal').modal('hide');
-	}
-}
-
-
 //Load info popup on 2 seconds after page load
 $(document).ready(function () {
 	var rememberMe = localStorage.getItem('installed');
@@ -17,20 +8,12 @@ $(document).ready(function () {
 	};
 });
 
-
-//Check if user is using an android webapp  and if so dont show the info modal.
-window.addEventListener('beforeinstallprompt', function(e) {
-	//console.log(e.platforms);
-	if(e.platforms == "web"){
-		$("#infoModal").modal("hide");
-		console.log("web");
-	} else {
-		console.log("Not web");
-		
+//Close info modal
+function closeInfoModal() {
+	if (window.navigator.standalone) {
+		$('#infoModal').modal('hide');
 	}
-});
-
-
+}
 
 
 window.addEventListener('beforeinstallprompt', function (e) {
@@ -246,6 +229,45 @@ if('serviceWorker' in navigator){
 	.then(reg => console.log('service worker registered'))
 	.catch(err => console.log('service worker not registered', err));
 }
+
+window.isUpdateAvailable = new Promise(function(resolve, reject) {
+	// lazy way of disabling service workers while developing
+	if ('serviceWorker' in navigator && ['localhost', '127'].indexOf(location.hostname) === -1) {
+		// register service worker file
+		navigator.serviceWorker.register('../sw.js')
+			.then(reg => {
+				reg.onupdatefound = () => {
+					const installingWorker = reg.installing;
+					installingWorker.onstatechange = () => {
+						switch (installingWorker.state) {
+							case 'installed':
+								if (navigator.serviceWorker.controller) {
+									// new update available
+									resolve(true);
+								} else {
+									// no update available
+									resolve(false);
+								}
+								break;
+						}
+					};
+				};
+			})
+			.catch(err => console.error('[SW ERROR]', err));
+	}
+});
+
+window['isUpdateAvailable']
+	.then(isAvailable => {
+		if (isAvailable) {
+			const toast = this.toastCtrl.create({
+				message: 'New Update available! Reload the webapp to see the latest juicy changes.',
+				position: 'bottom',
+				showCloseButton: true,
+			});
+			toast.present();
+		}
+	});
 
 closeInfoModal();
 

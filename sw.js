@@ -69,18 +69,40 @@ self.addEventListener('activate', evt => {
 });
 
 //fetch event
-self.addEventListener('fetch', (e) => {
-  e.respondWith((async () => {
-    const r = await
-    caches.match(e.request);
-    console.log(`[Service Worker] fetching resource: ${e.request.url}`);
-    if(r) {return r}
-    const response = await
-    fetch(e.request);
-    const cache = await
-    caches.open(TGAbxApp)
-    console.log(`[Service Worker] caching new resource: ${e.request.url}`)
-    cache.put(e.request, response.clone())
-    return response;
-  })())
-})
+// self.addEventListener('fetch', (e) => {
+//   e.respondWith((async () => {
+//     const r = await
+//     caches.match(e.request);
+//     console.log(`[Service Worker] fetching resource: ${e.request.url}`);
+//     if(r) {return r}
+//     const response = await
+//     fetch(e.request);
+//     const cache = await
+//     caches.open(TGAbxApp)
+//     console.log(`[Service Worker] caching new resource: ${e.request.url}`)
+//     cache.put(e.request, response.clone())
+//     return response;
+//   })())
+// })
+
+self.addEventListener('fetch', function (event) {
+  var requestURL = new URL(event.request.url);
+  var freshResource = fetch(event.request).then(function (response) {
+      var clonedResponse = response.clone();
+      // Don't update the cache with error pages!
+      if (response.ok) {
+          // All good? Update the cache with the network response
+          caches.open(CACHE_NAME).then(function (cache) {
+              cache.put(event.request, clonedResponse);
+          });
+      }
+      return response;
+  });
+  var cachedResource = caches.open(CACHE_NAME).then(async function (cache) {
+      const response = await cache.match(event.request);
+    return response || freshResource;
+  }).catch(function (e) {
+      return freshResource;
+  });
+  event.respondWith(cachedResource);
+});

@@ -1,4 +1,4 @@
-const TGAbxApp = "TG-ABX-App-v1.6"
+const TGAbxApp = "TG-ABX-App-v1.7"
 
 const assets = [
   "/index.html",
@@ -84,3 +84,9 @@ self.addEventListener('fetch', (e) => {
     return response;
   })())
 })
+
+self.addEventListener('message', function (event) {
+  if (event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
+});

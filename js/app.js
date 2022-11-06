@@ -224,50 +224,50 @@ function showAddToHomeScreen() {
 
 
 
-if('serviceWorker' in navigator){
-	navigator.serviceWorker.register('../sw.js')
-	.then(reg => console.log('service worker registered'))
-	.catch(err => console.log('service worker not registered', err));
-}
+// if('serviceWorker' in navigator){
+// 	navigator.serviceWorker.register('../sw.js')
+// 	.then(reg => console.log('service worker registered'))
+// 	.catch(err => console.log('service worker not registered', err));
+// }
 
-window.isUpdateAvailable = new Promise(function(resolve, reject) {
-	// lazy way of disabling service workers while developing
-	if ('serviceWorker' in navigator && ['localhost', '127'].indexOf(location.hostname) === -1) {
-		// register service worker file
-		navigator.serviceWorker.register('../sw.js')
-			.then(reg => {
-				reg.onupdatefound = () => {
-					const installingWorker = reg.installing;
-					installingWorker.onstatechange = () => {
-						switch (installingWorker.state) {
-							case 'installed':
-								if (navigator.serviceWorker.controller) {
-									// new update available
-									resolve(true);
-								} else {
-									// no update available
-									resolve(false);
-								}
-								break;
-						}
-					};
-				};
-			})
-			.catch(err => console.error('[SW ERROR]', err));
-	}
-});
+// window.isUpdateAvailable = new Promise(function(resolve, reject) {
+// 	// lazy way of disabling service workers while developing
+// 	if ('serviceWorker' in navigator && ['localhost', '127'].indexOf(location.hostname) === -1) {
+// 		// register service worker file
+// 		navigator.serviceWorker.register('../sw.js')
+// 			.then(reg => {
+// 				reg.onupdatefound = () => {
+// 					const installingWorker = reg.installing;
+// 					installingWorker.onstatechange = () => {
+// 						switch (installingWorker.state) {
+// 							case 'installed':
+// 								if (navigator.serviceWorker.controller) {
+// 									// new update available
+// 									resolve(true);
+// 								} else {
+// 									// no update available
+// 									resolve(false);
+// 								}
+// 								break;
+// 						}
+// 					};
+// 				};
+// 			})
+// 			.catch(err => console.error('[SW ERROR]', err));
+// 	}
+// });
 
-window['isUpdateAvailable']
-	.then(isAvailable => {
-		if (isAvailable) {
-			const toast = this.toastCtrl.create({
-				message: 'New Update available! Reload the webapp to see the latest guidance.',
-				position: 'bottom',
-				showCloseButton: true,
-			});
-			toast.present();
-		}
-	});
+// window['isUpdateAvailable']
+// 	.then(isAvailable => {
+// 		if (isAvailable) {
+// 			const toast = this.toastCtrl.create({
+// 				message: 'New Update available! Reload the webapp to see the latest guidance.',
+// 				position: 'bottom',
+// 				showCloseButton: true,
+// 			});
+// 			toast.present();
+// 		}
+// 	});
 
 closeInfoModal();
 

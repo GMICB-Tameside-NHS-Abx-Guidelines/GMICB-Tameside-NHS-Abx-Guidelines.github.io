@@ -1,4 +1,4 @@
-const TGAbxApp = "TG-ABX-App-v1.6"
+const TGAbxApp = "TG-ABX-App-v1.5"
 
 const assets = [
   "/index.html",
@@ -92,13 +92,13 @@ self.addEventListener('fetch', function (event) {
       // Don't update the cache with error pages!
       if (response.ok) {
           // All good? Update the cache with the network response
-          caches.open(CACHE_NAME).then(function (cache) {
+          caches.open(TGAbxApp).then(function (cache) {
               cache.put(event.request, clonedResponse);
           });
       }
       return response;
   });
-  var cachedResource = caches.open(CACHE_NAME).then(async function (cache) {
+  var cachedResource = caches.open(TGAbxApp).then(async function (cache) {
       const response = await cache.match(event.request);
     return response || freshResource;
   }).catch(function (e) {

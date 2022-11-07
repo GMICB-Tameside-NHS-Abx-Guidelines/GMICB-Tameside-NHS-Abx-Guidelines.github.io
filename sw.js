@@ -1,4 +1,4 @@
-const TGAbxApp = "TG-ABX-App-v1.1.15"
+const TGAbxApp = "TG-ABX-App-v1.1.16"
 
 const assets = [
   "/index.html",

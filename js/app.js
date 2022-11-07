@@ -293,14 +293,17 @@ const rememberUser = () => {
 }
 
 //check if device is online or not
-window.addEventListener("load", () => {
-	function handleNetworkChange(event) {
-	  if (navigator.onLine) {
-		document.body.classList.remove("offline");
-	  } else {
-		document.body.classList.add("offline");
-	  }
+function hasNetwork() {
+	const element = document.querySelector(".status");
+	const statusText = document.querySelector(".status-text");
+	// Update the DOM to reflect the current status
+	if (navigator.onLine) {
+	  element.classList.remove("offline");
+	  element.classList.add("online");
+	} else {
+	  element.classList.remove("online");
+	  element.classList.add("offline");
+	  statusText.innerText = "You are not connected to the internet. If any updates have been made since you last visited these guidelines, you may not see the most up to date guidelines. Please ensure you are connected to the internet to get the most up to date guidelines.";
 	}
-	window.addEventListener("online", handleNetworkChange);
-	window.addEventListener("offline", handleNetworkChange);
-  });
+  }
+  hasNetwork();

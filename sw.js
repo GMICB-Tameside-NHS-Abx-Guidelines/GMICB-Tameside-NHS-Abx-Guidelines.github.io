@@ -1,4 +1,4 @@
-const TGAbxApp = "TG-ABX-App-v1.1.16"
+const TGAbxApp = "TG-ABX-App-v1.1.17"
 
 const assets = [
   "/index.html",
@@ -58,7 +58,8 @@ self.addEventListener('install', (e) => {
 
 // activate event
 self.addEventListener('activate', evt => {
-  evt.waitUntil(
+  evt.waitUntil
+  (
     caches.keys().then(keys => {
       return Promise.all(keys
         .filter(key => key !== TGAbxApp)

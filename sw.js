@@ -1,4 +1,4 @@
-const TGAbxApp = "TG-ABX-App-v1.1.20"
+const TGAbxApp = "TG-ABX-App-v1.1.21"
 
 const assets = [
   "/index.html",
@@ -61,8 +61,7 @@ self.addEventListener('install', (e) => {
 
 // activate event
 self.addEventListener('activate', evt => {
-  evt.waitUntil
-  (
+  evt.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(keys
         .filter(key => key !== TGAbxApp)
@@ -92,21 +91,21 @@ self.addEventListener('activate', evt => {
 self.addEventListener('fetch', function (event) {
   var requestURL = new URL(event.request.url);
   var freshResource = fetch(event.request).then(function (response) {
-      var clonedResponse = response.clone();
-      // Don't update the cache with error pages!
-      if (response.ok) {
-          // All good? Update the cache with the network response
-          caches.open(TGAbxApp).then(function (cache) {
-              cache.put(event.request, clonedResponse);
-          });
-      }
-      return response;
+    var clonedResponse = response.clone();
+    // Don't update the cache with error pages!
+    if (response.ok) {
+      // All good? Update the cache with the network response
+      caches.open(TGAbxApp).then(function (cache) {
+        cache.put(event.request, clonedResponse);
+      });
+    }
+    return response;
   });
   var cachedResource = caches.open(TGAbxApp).then(async function (cache) {
-      const response = await cache.match(event.request);
+    const response = await cache.match(event.request);
     return response || freshResource;
   }).catch(function (e) {
-      return freshResource;
+    return freshResource;
   });
   event.respondWith(cachedResource);
 });
